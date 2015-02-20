@@ -39,6 +39,7 @@ var CodeMirrorEditor = React.createClass({
   componentDidMount: function() {
     var isTextArea = this.props.forceTextArea || IS_MOBILE;
     if (!isTextArea) {
+      this.requireMode();
       this.editor = CodeMirror.fromTextArea(this.refs.editor.getDOMNode(), this.props);
       this.editor.on('change', this.handleChange);
     }
@@ -53,6 +54,12 @@ var CodeMirrorEditor = React.createClass({
       }
     }
   },
+
+  requireMode: function() {
+    var mode = this.props.mode;
+    if (!mode) return;
+    require('codemirror/mode/'+mode+'/'+mode+'.js');
+  }
 
   handleChange: function() {
     if (this.editor) {
